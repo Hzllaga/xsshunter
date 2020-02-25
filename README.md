@@ -1,4 +1,4 @@
-XSS Hunter修改版，文章：[XSS Hunter平台搭建记录](https://wtfsec.org/posts/xss-hunter%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/)
+# XSS Hunter修改版，文章：[XSS Hunter平台搭建记录](https://wtfsec.org/posts/xss-hunter%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/)
 
 # XSS Hunter Source Code
 

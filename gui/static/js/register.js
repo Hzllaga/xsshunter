@@ -26,7 +26,7 @@ function register_account() {
             localStorage.setItem( "CSRF_TOKEN", CSRF_TOKEN );
             window.location = "/app";
         } else {
-            $( ".bad_signup_text_fields" ).text( response["invalid_fields"] );
+            $( ".bad_signup_text_fields" ).text( response["error"] );
             if( $( ".bad_signup_text_fields" ).text().indexOf( "Invalid CAPTCHA" ) > -1 || $( ".bad_signup_text_fields" ).text().indexOf( "Invite code not valid" ) > -1 ) {
                 grecaptcha.reset();
             }

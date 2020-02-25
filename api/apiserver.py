@@ -129,7 +129,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def validate_recaptcha( self, recaptcha_response, ip ):
         if recaptcha_response == "":
-            self.error( "Missing required field recaptcha")
+            self.error( "Invalid CAPTCHA")
             return False
         URIReCaptcha = 'https://www.google.com/recaptcha/api/siteverify'
         recaptchaResponse = recaptcha_response
@@ -144,7 +144,7 @@ class BaseHandler(tornado.web.RequestHandler):
         result = json.loads(data)
         success = result.get('success', None)
         if success == False:
-            self.error( "Recaptcha response error")
+            self.error( "Invalid CAPTCHA")
             return False
         return True
 
