@@ -28,7 +28,7 @@
                     <label for="name"><p class="asterisk">*</p>Custom <code><i>yoursubdomain</i>.{{domain}}</code> Subdomain <span title="XSS Payload Domain" data-toggle="popover" data-placement="top" data-content="Your custom XSS Hunter subdomain which identifies your injections. eg: 'subdomain'" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                 </label><br />
                     <input id="domain" class="form-control" name="domain" placeholder="short subdomain word here" type="text" />
-
+					<div class="g-recaptcha" data-sitekey="key"></div><br />
                     <button type="button" class="signup_button btn btn-primary btn-block">Sign Up</button>
                     <br />
                     <p class="asterisk">*</p> = Required
@@ -36,6 +36,7 @@
             </div>
         </div>
     </div>
+	<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/signup.css">
     </script>
     <script src="/static/js/register.js"></script>

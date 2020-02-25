@@ -591,6 +591,7 @@ function login() {
     var post_data = {
         "username": username,
         "password": password,
+		"recaptcha_response": grecaptcha.getResponse(),
     };
 
     api_request( "POST", "/api/login", post_data, function( data ) {
@@ -603,6 +604,7 @@ function login() {
             $( ".bad_password_dialogue" ).fadeIn();
             $( ".bad_password_dialogue" ).text( data["error"] );
             $( "#username" ).select();
+			grecaptcha.reset();
         }
     })
 };

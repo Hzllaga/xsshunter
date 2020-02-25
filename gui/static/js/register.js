@@ -19,6 +19,7 @@ function register_account() {
     USER.email = $( "#email" ).val();
     USER.password = $( "#password" ).val();
     USER.invite_code = $( "#invite_code" ).val();
+    USER.recaptcha_response = grecaptcha.getResponse();
     api_request( "POST", "/api/register", USER, function( response ) {
         if( response["success"] == true ) {
             CSRF_TOKEN = response["csrf_token"];
@@ -26,6 +27,9 @@ function register_account() {
             window.location = "/app";
         } else {
             $( ".bad_signup_text_fields" ).text( response["invalid_fields"] );
+            if( $( ".bad_signup_text_fields" ).text().indexOf( "Invalid CAPTCHA" ) > -1 || $( ".bad_signup_text_fields" ).text().indexOf( "Invite code not valid" ) > -1 ) {
+                grecaptcha.reset();
+            }
             $( ".bad_signup_dialogue" ).fadeIn();
             setTimeout( function() {
                 $( ".bad_signup_dialogue" ).fadeOut();
